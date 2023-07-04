@@ -11,7 +11,7 @@
  * @ap : List
  * @count : Counter
  */
-void handle_format_specfier(char specifier, va_list ap, int *count)
+void handle_format_specifier(char specifier, va_list ap, int *count)
 {
 	switch (specifier)
 	{
@@ -29,7 +29,8 @@ void handle_format_specfier(char specifier, va_list ap, int *count)
 			print_percent(count);
 			break;
 		default:
-			write(1, &specifier - 1, 1);
+			write(1, &specifier, 1);
+			specifier--;
 			write(1, &specifier, 1);
 			count += 2;
 			break;

@@ -25,13 +25,30 @@ void print_char(va_list ap, int *count)
  */
 void print_int(va_list ap, int *count)
 {
-	int arg, len;
-	char buffer[32];
+	int num = va_arg(ap, int);
+	int i, temp, len = 0;
+	char num_str[12];
 
-	arg = va_arg(ap, int);
-	len = sprintf(buffer, "%d", arg);
-	write(1, buffer, len);
-	(*count)++;
+	if (num < 0)
+	{
+		num = -num;
+		write(1, "-", 1);
+		(*count)++;
+	}
+	temp = num;
+	while (temp != 0)
+	{
+		len++;
+		temp /= 10;
+	}
+	num_str[len] = '\0';
+	for (i = len - 1; i >= 0; i--)
+	{
+		num_str[i] = num % 10 + '0';
+		num /= 10;
+	}
+	write(1, num_str, len);
+	(*count) += len;
 }
 
 /**
@@ -40,10 +57,11 @@ void print_int(va_list ap, int *count)
  * @count : counter
  */
 void print_string(va_list ap, int *count)
-{const char *str;
+{
+	const char *str;
 	int len;
 
-	str = va_arg(ap, const char);
+	str = va_arg(ap, const char*);
 	len = 0;
 	if (str == NULL)
 	{
